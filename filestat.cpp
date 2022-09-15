@@ -50,7 +50,7 @@ int main (int argc, char ** argv){
 // GIVE VARIABLES THEIR VALUE //
 
     inodeNum = buffer.st_ino; //get inode number
-    fileType = buffer.st_mode &S_IFMT; //get file type number //long long
+    fileType = buffer.st_mode &S_IFMT; //get file type number 
     fileSize = buffer.st_blksize; //get file size in bytes
     date = &buffer.st_mtime; //get date last modified
 
