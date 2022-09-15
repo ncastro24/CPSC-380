@@ -30,27 +30,28 @@ int main (int argc, char ** argv){
   }
 
   //get file from input and use stat//
-		fileName = argv[1];
+	fileName = argv[1];
 		status = stat(fileName.c_str(), &buffer); // c_str converts file string into char
 
-    if (stat(argv[1], &buffer) == -1) { //unsuccessful buffer
-      printf("ERROR.");
-      exit(1);
-    }
+  if (stat(argv[1], &buffer) == -1) { //unsuccessful buffer
+    printf("ERROR.");
+    exit(1);
+  }
 
 
 // GET USER ID //
-    struct passwd *userID;
-    uid_t uid = 0; //ID valid if 0
+  struct passwd *userID;
+  uid_t uid = 0; //ID valid if 0
 
-    if ((userID = getpwuid(uid)) == NULL){ //check is userid is valid
-      perror("ERROR: invalid username");
-    }
+  if ((userID = getpwuid(uid)) == NULL){ //check is userid is valid
+    printf("ERROR: invalid username");
+    exit(1);
+  }
 
 // GIVE VARIABLES THEIR VALUE //
 
     inodeNum = buffer.st_ino; //get inode number
-    fileType = buffer.st_mode &S_IFMT; //get file type number 
+    fileType = buffer.st_mode &S_IFMT; //get file type number
     fileSize = buffer.st_blksize; //get file size in bytes
     date = &buffer.st_mtime; //get date last modified
 
