@@ -1,0 +1,5 @@
+Inode Number: 47220372
+File Type: Regular file
+User: root
+File Size: 4096
+Date: Tue Sep 13 16:19:57 2022
