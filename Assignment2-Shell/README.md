@@ -13,10 +13,6 @@ A program that acts as a shell and can execute linux commands.
 
 Typing "quit" or "exit" terminates the program.
 
-KNOWN BUG:
-
-'&' does not cause the program to wait and immediately goes to child. 
-
 
 To use: compile and specify the command you want to run. 
 
@@ -44,3 +40,7 @@ https://stackoverflow.com/questions/1330550/c-compare-char-array-with-string
 https://stackoverflow.com/questions/46069789/how-does-execl-deal-with-bin-sh-in-linux
 
 https://stackoverflow.com/questions/3985193/what-is-bin-sh-c
+
+https://stackoverflow.com/questions/19461744/how-to-make-parent-wait-for-all-child-processes-to-finish
+
+https://www.geeksforgeeks.org/wait-system-call-c/
