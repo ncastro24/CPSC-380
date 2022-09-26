@@ -14,6 +14,8 @@ https://stackoverflow.com/questions/41252808/string-compare-in-c-with-fgets
 https://stackoverflow.com/questions/1330550/c-compare-char-array-with-string
 https://stackoverflow.com/questions/46069789/how-does-execl-deal-with-bin-sh-in-linux
 https://stackoverflow.com/questions/3985193/what-is-bin-sh-c
+https://stackoverflow.com/questions/19461744/how-to-make-parent-wait-for-all-child-processes-to-finish
+https://www.geeksforgeeks.org/wait-system-call-c/
 **/
 
 
@@ -54,38 +56,19 @@ int main(void) {
         return 1;
       }
       if (pid == 0){
+        if (strcmp(userInput, "&\n") == 0){
+          exit(0); //leaves child state
+        }
         execl("/bin/sh", "sh", "-c", userInput, NULL);
-        should_run = false; //breaks loop
+        exit(0); //ends child stte
       }
       if (pid > 0){
-        if (strcmp(userInput, "&") == 0){ //if user inputs &....
-          sleep(1);
-          printf("Waiting.");
-          wait(NULL); //... wait
-          pid = wait(&status);
+        sleep(1);
+        if (strcmp(userInput, "&\n") == 0){ //if user inputs &....
+          printf("Waiting...\n");
+          pid = wait(NULL);
         }
       }
-
-/**      switch(pid){
-        case (-1): //error
-          perror("Failed to fork.\n");
-          return 1;
-          break;
-        case (0): //child
-          printf("Test");
-          execl(userInput, userInput, NULL);
-          should_run = false; //breaks loop
-          break;
-        default: //parent
-          if (strcmp(userInput, "&") == 0){ //if user inputs &....
-            sleep(1);
-            printf("Waiting.");
-            wait(NULL); //... wait
-            //pid = wait(&status);
-          }
-          break;
-      }
-      **/
    }
 
 return 0;
