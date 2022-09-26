@@ -33,6 +33,10 @@ https://www.geeksforgeeks.org/exec-family-of-functions-in-c/
 
 https://stackoverflow.com/questions/28733026/how-to-use-exec-to-execute-commands-in-c-and-linux
 
+https://stackoverflow.com/questions/19461744/how-to-make-parent-wait-for-all-child-processes-to-finish
+
+https://www.geeksforgeeks.org/wait-system-call-c/
+
 https://stackoverflow.com/questions/41252808/string-compare-in-c-with-fgets
 
 https://stackoverflow.com/questions/1330550/c-compare-char-array-with-string
