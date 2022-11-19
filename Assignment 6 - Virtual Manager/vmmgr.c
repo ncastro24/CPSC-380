@@ -6,10 +6,12 @@ Assignment 6: vmmgr Virtual Address Manager
 
 References:
 https://www.cplusplus.com/reference/cstdio/fopen/
-https://www.tutorialspoint.com/c_standard_library/c_function_fscanf.htm
+https://www.tutorialspoint.com/c_standard_library/c_function_fscanf.html
+https://stackoverflow.com/questions/6357031/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-in-c
 
 Known Issues:
-- Counts hits incorrectly
+- Counts hits incorrectly, possibly because it never finds the table page to be the same as the page number
+- Backing store page fault implementation is incorrect/unfinished
 */
 
 #include <string.h>
@@ -24,7 +26,6 @@ Known Issues:
 #define TLB_SIZE 16
 #define FRAME_SIZE 256
 
-//char *line = NULL;
 FILE *addressesFile;
 FILE *backingStore;
 
@@ -34,7 +35,6 @@ double hits = 0.0; //tlb hits
 double hitrate = -1.0; //tlb hit rate
 
 int pagetable[PAGE_SIZE];
-//TLB tlb[TLB_SIZE];
 char physicalmem[PAGE_SIZE * FRAME_SIZE]; //physical memory
 
 typedef struct {
@@ -49,7 +49,7 @@ int main (int argc, char* argv[]){
 
   if(argc < 1)
 	{
-		fprintf(stderr, "Please provide a valid file.\n");
+		printf("Please provide a valid file.\n");
 		return -1;
 	}
 
@@ -72,9 +72,10 @@ int main (int argc, char* argv[]){
   /*for (int i = 0; i < TLB_SIZE; i++){
     tlb[i] = -1;
   }*/
-  //TLB* tlb = (TLB*) malloc(TLB_SIZE * sizeof(TLB));
-  //int vaddr; //virtual address
-  //int paddr; //physical address
+
+  char* hex = (char*) malloc(4 * sizeof(char)); //allocate for hex conversion
+  //char* memory = (char*) malloc(256 * 256 * sizeof(char)); //memory
+
   int rowcount = 0;
 
   int pagenum;
@@ -86,17 +87,15 @@ int main (int argc, char* argv[]){
   char buffer[32];
   //while (fscanf(addressesFile, "%d", &vaddr) == 1){
   while (fgets(buffer, 32, addressesFile)){
-    //int addr = atoi(addressesFile);
     int addr = atoi(buffer);
-    //int addr = vaddr;
     rowcount++;
     pagenum = addr & 0xFFFF;
     pagenum = pagenum >> 8;
     offset = addr & 0xFF;
-    //frame = pagetable[pagenum];
 
     for (int i; i < TLB_SIZE; i++){
-      if (tlb[i].page == pagenum){
+      tlb[i].page = sprintf(hex, "%04X", tlb[i].page); //convert page into hex
+      if (tlb[i].page == pagenum){ //if the table page hex is the same as the page number
         frame = tlb[i].frame;
         hits++;
         didhit = true;
@@ -107,6 +106,9 @@ int main (int argc, char* argv[]){
     if (!didhit){ //if theres no hit create a page fault
       pf++;
       frame = pagetable[pagenum];
+      fseek(backingStore, pagenum, SEEK_SET);
+      int currentpage = frame*256;
+      //fread(memory+currentpage, sizeof(char), 256, backingStore);
     }
 
   }
